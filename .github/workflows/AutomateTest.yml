@@ -1,0 +1,38 @@
+name: Automate Test
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on:
+  push:
+    branches:
+      - TestBranch  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9.6"]
+        
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install pytest pytest-cov playwright
+
+      - name: Test with pytest
+        run: |
+          pytest --cov=./ --cov-report=html
+
+      - name: Upload code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code coverage report
+          path: tests/htmlcov/
+
+      
