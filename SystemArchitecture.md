@@ -1,2 +1,1 @@
-
-![alt text](https://github.com/ryrichard/django-react-app/ER-Diagram.png?raw=true)
+<img width="30px" src="./images/Flowchart.png" alt="Flowchart" />
