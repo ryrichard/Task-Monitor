@@ -11,6 +11,6 @@ class TodoModelTest(TestCase):
         self.assertEqual(todo.description, "Test Test Test.")
       
         
-        # Assuming completed is False by default
+        
 
     
