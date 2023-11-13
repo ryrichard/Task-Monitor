@@ -1,0 +1,39 @@
+.login-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: #a3caf9;
+  display: flex;
+  align-items: center;
+}
+.modal-content {
+  border-radius: 5px;
+  text-align: center;
+}
+.close {
+  position: fixed;
+  top: 8px; 
+  right: 30px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left; 
+}
+.login .form-label
+{
+  display: block;
+  margin-bottom: 5px;
+  text-align: left; 
+  margin-left: 450px;
+}
+
