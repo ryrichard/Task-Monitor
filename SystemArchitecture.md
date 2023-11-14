@@ -1,4 +1,6 @@
-# Wise Wallet Architecture
+### Wise Wallet Architecture
+
+
 <img width="1000px" src="./images/HighLevelComponent.png" alt="HighLevelComponent" />
 
 Still learning MERN. As far as I can tell, the client can be controlled/interactived with React. We use Node/Next.js to communicate between the frontend and the database. And we use Mongodb to store our information. Currrently, I also plan on using mongo Atlas to store my data. 
