@@ -4,7 +4,7 @@ basic mern stack structure
 
 <img width="1000px" src="./images/er-diagram.png" alt="ER-Diagram" />
 
-user db has 4 typical properties, user id connect to Group_member db and task db and group db; group_id in Group_member db connec to group db and task_id in task db.
+user db has 4 typical properties, user id connect to Group_member db and task db and group db; group_id in Group_member db connect to group db and task_id in task db.
 
 <img width="1000px" src="./images/flow.png" alt="Flowchart" />
 
