@@ -3,7 +3,7 @@
 
 <img width="1000px" src="images/HighLevelComponentDiag.png" alt="HighLevelComponentDiag" />
 
-Still learning MERN. As far as I can tell, the client can be controlled/interactived with React. We use Node/Next.js to communicate between the frontend and the database. And we use Mongodb to store our information. Currrently, I also plan on using mongo Atlas to store my data. 
+The user interface is made interactive using React for a smooth and engaging experience. We connect the front end to the database with Node.js and Next.js, ensuring efficient data communication. All the information is stored in MongoDB. Might use MongoDB Atlas to securely store and manage our data.
 
 <img width="1000px" src="./images/ER-Diagram.png" alt="ER-Diagram" />
 
