@@ -1,7 +1,7 @@
 ### Wise Wallet Architecture
 
 
-<img width="1000px" src="images/HighLevelComponentDiag.png" alt="HighLevelComponentDiag" />
+<img width="500px" src="images/HighLevelComponentDiag.png" alt="HighLevelComponentDiag" />
 
 The user interface is made interactive using React for a smooth and engaging experience. We connect the front end to the database with Node.js and Next.js, ensuring efficient data communication. All the information is stored in MongoDB. Might use MongoDB Atlas to securely store and manage our data.
 
