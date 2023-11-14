@@ -7,7 +7,7 @@ The user interface is made interactive using React for a smooth and engaging exp
 
 <img width="700px" src="images/EntityDiagram.png" alt="EntityDiagram" />
 
-Our diagram is simple. We have the usual User_DB with the typical properties. They can optionally be a group member, but not required for our app. GroupMember_DB is its own schema and connects User_DB to Group_DB. Group_DB only has an id and name. Its purpose is to just associate people together. Last is the Task_DB. This will hold 4 properties: associated_id, title, description, and completed. The associated_id is a foreign key that associated with either a group or an individual, which is why theres two DB connected to it. The rest are there to hold relavent information.
+Our setup is pretty straightforward. First, we have the User database (User_DB) with the usual info. Users can choose to be part of a group, but it's not mandatory. Then, there's the GroupMember database (GroupMember_DB), which links users from User_DB to the Group database (Group_DB). The Group_DB only keeps an ID and a name to connect people. Lastly, there's the Task database (Task_DB) with properties like associated_id, title, description, and completed. The associated_id connects to either a group or an individual, which is why it's linked to both databases. The other properties just store relevant details.
 
 <img width="1000px" src="./images/Flowchart.png" alt="Flowchart" />
 
