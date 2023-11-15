@@ -5,7 +5,7 @@
     transform: translate(-50%, -50%);
     width: 100vw;
     height: 100vh;
-    background: #a3caf9;
+    background: radial-gradient(pink, lightblue);
     display: flex;
     align-items: center;
 }
@@ -33,5 +33,23 @@
   display: block;
   margin-bottom: 5px;
   text-align: left; 
-  margin-left: 450px;
+  margin-left: -35px;
+  
+}
+.register input[type="name"],
+.register input[type="password"],
+.register input[type="email"]
+{
+  width: 130%; 
+  margin-left: -15%;
+  
+}
+.register{
+    background-color: white;
+    width: 80%; 
+    max-width: 400px; 
+    padding: 85px;
+    border-radius: 5px;
+    margin: 0 auto;
+    
 }

@@ -32,7 +32,7 @@ class CustomModal extends Component {
     render(){
         const { toggle, onSave } = this.props;
         return(
-            <Modal isOpen={true} toggle={toggle}>
+            <Modal isOpen={true} toggle={toggle} style={{ top: '20%'}}>
                 <ModalHeader toggle={toggle}> Task Item</ModalHeader>
                 <ModalBody>
                     <Form>
@@ -59,7 +59,16 @@ class CustomModal extends Component {
                                 placeholder="Enter Task Description"
                             />
                         </FormGroup>
-
+                        {/* Due Date */}
+                        <FormGroup>
+                            <Label for="DueDate"> Due Date</Label>
+                            <Input
+                                type="date"
+                                name="DueDate"
+                                value={this.state.activeItem.dueDateTime}
+                                onChange={this.handleChange}
+                                />
+                        </FormGroup>
                         {/* Completed */}
                         <FormGroup check>
                             <Label for="completed">

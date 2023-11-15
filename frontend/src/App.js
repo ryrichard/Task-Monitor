@@ -115,9 +115,11 @@ class App extends Component{
    const item = {title: "", modal: !this.state.modal};
    this.setState({activeItem:item, modal: !this.state.modal});
  }
+
  editItem = item => {
    this.setState({activeItem: item, modal: !this.state.modal});
  }
+
 
 
 // Function to handle login button click
@@ -148,11 +150,11 @@ handleRegisterCancel = () => {
        {/* Button for login and register */}
        <div className="loginBtn">
          <div className="button">
-           <button className="btn btn-success" onClick={this.handleLoginClick}>Login</button>
+           <button className="btn btn-primary" onClick={this.handleLoginClick}>Login</button>
            <button className="btn btn-primary" onClick={this.handleRegisterClick}>Register</button>
      </div>
    </div>
-       <h1 className="text-white text-uppercase text-center my-4">Task Monitor</h1>
+       <h1 className="text-lightblue text-uppercase text-center my-4">Task Monitor</h1>
        <div className="row">
          <div className="col-md-10 col-sma-10 mx-auto">
            <div className="card p-3" style={{ height: '70vh' }}>
@@ -167,14 +169,14 @@ handleRegisterCancel = () => {
          </div>
        </div>
       
-       <footer className="my-3 mb-2 bg-info text-white text-center">Copyright 2023 &copy; All Rights Reserved</footer>
+       <footer className="my-3 mb-2 text-black text-center">Copyright 2023 &copy; All Rights Reserved</footer>
        {this.state.modal ? (
          <Modal activeItem={this.state.activeItem} toggle={this.toggle} onSave={this.handleSubmit}/>
        ) : null}
         {/* Separate modal for login */}
         {this.state.viewLogin && (
-         <div className="login-modal">
-           <div className="modal-content">
+         <div className="loginModal">
+           <div className="modalContent">
              <span className="close" onClick={this.handleLoginCancel}>
                &times;
              </span>

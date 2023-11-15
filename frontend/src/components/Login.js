@@ -1,6 +1,7 @@
 import React from "react";
 import './Login.css';
 
+
 export default function Login() {
   return (
     <div className="login">
@@ -10,7 +11,7 @@ export default function Login() {
           <label className="form-label">Email Address</label>
           <input type="email" placeholder="Enter your email" />
         </div>
-
+      
         <div className="form-group">
           <label className="form-label">Password</label>
           <input type="password" placeholder="Enter your password" />
