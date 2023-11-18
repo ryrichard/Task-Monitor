@@ -4,6 +4,14 @@
 */
 const User = require('../database/models/userModel')
 const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+const SALT_ROUNDS = 10
+
+async function getallUserController(req, res){
+    const users = await User.find({})
+    res.status(200).json({users})
+}
 
 async function loginController(req, res) {
     const { username, password } = req.body;
@@ -18,15 +26,15 @@ async function loginController(req, res) {
         // Compare password with encrypted password
         const isPasswordValid = await bcrypt.compare(password, user.hashedPassword)
 
-        // check if password is correct with associated user. Right now jsut checking strings
-        // const isPasswordValid = await password === user.password
-
         if(!isPasswordValid){
             return res.status(401).json({message: "Error: Incorrect User"})
         }
+
+        // Generate jwt token
+        const token = jwt.sign({user: user._id, username: user.username}, 'your-secret-key', {expiresIn: '1h'})
+
         //successful User
-        req.session.user = {id: user._id, username: user.username};
-        res.json({message: 'User Successful', user: req.session.user})
+        res.json({message: 'Login Successful', token})
     } catch (error){
         console.error(error)
         res.status(500).json({message: "Internal Server Error"})
@@ -38,14 +46,15 @@ async function loginController(req, res) {
  * Functionality of processing the logout request goes here
  */
 async function logoutController(req, res) {
-    req.session.destroy((err) => {
-        if(err){
-            console.error(err)
-            return res.status(500).json({message: "Internal Server Error"})
-        }
+    try{
+        res.clear('jwtToken')
 
         res.json({message: "Logout Successful"})
-    })
+    }catch (error){
+        console.error(error)
+        res.status(500).json({message: "Internal Server Error"})
+    }
+
 }
 
 /**
@@ -53,77 +62,167 @@ async function logoutController(req, res) {
  * Functionality of processing the register request goes here
  */
 async function registerController(req, res) {
-    const {username, password, email } = req.body
+    const {username, password, email} = req.body
+    
+    // console.log(`${username}, ${password}, ${email}`)   
 
-    if(User.some((user) => user.username == username)) {
+    const usernameExist = await User.exists({username: {$regex: new RegExp(username, 'i')}})
+
+    // const userE = await User.findOne({username})
+    // console.log(userE)
+    
+    if(usernameExist){
         return res.status(400).json({message: "Username already exist"})
     }
 
-    if(User.some((email) => user.email == email)) {
+    const emailExist = await User.exists({email: {$regex: new RegExp(email, 'i')}})
+
+    if(emailExist){
         return res.status(400).json({message: "Email already exist"})
     }
 
     try{
         // encrypt password
-        const hashedPassword = await bcrypt.hash(password, process.env.SALTROUNDS)
+        const salt = await bcrypt.genSalt(SALT_ROUNDS)
+
+        const hashedPassword = await bcrypt.hash(password, salt)
 
         const newUser = {username, hashedPassword, email};
-        User.push(newUser);
 
-        res.json({message: "User registration successful", user: newUser})
+        const createUser = await User.create(newUser)
+
+        res.status(200).json({message: "User registration successful", user: newUser})
     } catch (err) {
         console.error("Error during registration: ", err);
     }
 }
 
-/**
- * Upvote fact controller
- * Functionality of a user clicking the upvote fact goes here
- */
-async function upvoteFactController(req, res) {
+/*
+Get all task
+Requires user id or group id
+*/
+async function getTasksController(req, res){
+    // get all task. First we find TaskGroup based on ID. Then return all taskId
+    try {
+        const user = req.user
+        
+        const taskGroups = await TaskGroup.find({id: user._id})
 
+        const taskIds = taskGroups.flatMap((taskGroup) => taskGroup.taskId)
+
+        const tasks = await Task.find({_id: {$in: taskIds}})
+
+        return res.status(200).json(tasks)
+    } catch (err){
+        console.error(err)
+    }
 }
 
-/**
- * Downvote fact controller 
- * Functionality of a user clicking the downvote fact goes here
- */
-async function downvoteFactController(req, res) {
+/*
+Get a task
+Requires userid/groupid and taskid
+First look for userId/groupID in taskGroup.
+Then in taskId, look for taskId
+*/
+async function getTaskController(req, res){
+    // const { id } = req.params
 
+    // // check if id exist
+    // if(!mongoose.Types.ObjectId.isValid(id)){
+    //     return res.status(404).json({error: "No such task"})
+    // }
+
+    // const task = await Task.findById(id)
+
+    // // check if task exist
+    // if(!task){
+    //     return res.status(404).json({error: "No such task"})
+    // }
+
+    // return res.status(200).json(task)
 }
 
-/**
- * Upvote comment controller 
- * Functionality of a user clicking the upvote a comment goes here
- */
-async function upvoteCommentController(req, res) {
+/*
+Create task 
+Requires 2 objects, the user or group and task
+Get id from user or group
+Find taskGroup affiliated with id. If none found, create one.
+Add taskId to found/new taskGroup.taskId
+*/
+async function createTaskController(req, res){
+    // const {user, task} = req.body
 
+    // const {title, description, completed} = task
+    // const {id} = user._id
+
+    // try{
+    //     const task = await Task.create({title, description, completed, id})
+    //     res.status(200).json(task)
+    // } catch (error) {
+    //     res.status(404).json({error: error.message})
+    // }
 }
 
-/**
- * Downvote comment controller 
- * Functionality of a user clicking the downvote a comment goes here
- */
-async function downvoteCommentController(req, res) {
+/*
+Delete task
+Requires userid/groupid and taskid
+Find taskGroup based on userid/groupid
+Find task based on taskgroup.taskid
+Delete it if found
+*/
+async function deleteTaskController(req, res){
+    // const { id } = req.params
 
+    // // check if id exist
+    // if(!mongoose.Types.ObjectId.isValid(id)){
+    //     return res.status(404).json({error: "No such task"})
+    // }
+
+    // const task = await Task.findOneAndDelete({_id: id})
+
+    // // check if task exist
+    // if(!task){
+    //     return res.status(404).json({error: "No such task"})
+    // }
+
+    // return res.status(200).json(task)
 }
 
-/**
- * Post comment controller 
- * Functionality of a user post a comment to a fact goes here
- */
-async function postCommentController(req, res) {
+/*
+Update task 
+Requires userid/groupid and taskid
+Find taskGroup based on userid/groupid
+Find task based on taskgroup.taskid
+Update if found
+*/
+async function updateTaskController(req, res){
+    // const {id}  = req.params
 
+    // // check if id exist
+    // if(!mongoose.Types.ObjectId.isValid(id)){
+    //     return res.status(404).json({error: "No such task"})
+    // }
+
+    // const task = await Task.findOneAndUpdate({_id: id}, {...req.body}, {new:true})
+
+    // if(!task){
+    //     return res.status(404).json({error: "No such task"})
+    // }
+
+    // res.status(200).json(task)
 }
+
+
 
 
 module.exports = {
+    getallUserController,
     loginController,
     logoutController,
     registerController,
-    upvoteFactController,
-    upvoteCommentController,
-    downvoteFactController,
-    downvoteCommentController,
-    postCommentController,
+    getTasksController,
+    getTaskController,
+    createTaskController,
+    deleteTaskController,
+    updateTaskController
 }
