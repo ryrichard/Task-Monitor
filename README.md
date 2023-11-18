@@ -1,25 +1,15 @@
-# django-react-app
+# Connecting AWS
+Tried to deploy the MERN app with AWS. Only tutorials I could find were like 3 years old, and many of them are outdated. I feel like I have set up everything, but I just cant figure out how to connect it all. Used PM2, NGINX, created an EC2 with Ubuntu. Ill add pictures to show what I tried to do.
 
-This is the initial project, nothing special. Create a python environment to make organization easier. 
-It uses django and react so get those if you can. You need npm to install react. You also need node.js at some point.
+Here is my EC2 ready. However, the IPv4 only leads to a 500 Internal Server Error
+<img src="/images/AWS.png" alt="AWS EC2" title="AWS EC2">
 
-## Get Django
-https://www.djangoproject.com/download/
+I am able to connect to the Ubuntu instance on AWS. I even connected to the terminal and run a few codes such as PM2 as shown below. Still cant connect my app though.
+<img src="/images/PM2.png" alt="PM2" title="PM2">
 
-## Get React
-https://create-react-app.dev/docs/getting-started/
 
-### Open backend
-To get started, pull the repository. Open two terminals. One should be open in the backend folder. The other should be open in the frontend folder.
-From the terminal in the backend, run:
-'''
-python manage.py runserver
-'''
-This will link you to a localhost:8000. It will get a dead link, just add '/api/' at the end of the link.
-
-### Open frontend
-In the terminal open to the frontend, run:
-'''
-npm start
-'''
-This will automatically open up the link in your default browser. You can then add task to the task monitor.
+## Sources 
+https://github.com/ryrichard/django-react-app/edit/RichardY-AWSBuild/README.md
+https://jasonwatmore.com/post/2018/09/26/setup-nodejs-mongodb-production-server-on-ubuntu-1804
+https://www.workfall.com/learning/blog/how-to-build-and-deploy-a-mern-stack-application-on-aws/
+<br /> ChatGPT
