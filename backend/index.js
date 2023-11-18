@@ -15,9 +15,20 @@ app.use(express.json())
 // })
 
 //attaches all routes to app
-app.get("/", (req, res) => res.json({status : "OK"}));
-app.use(userRoutes)
+// app.get("/", (req, res) => res.json({status : "OK"}));
+app.get("/", function(req, res){
 
+	res.sendFile(
+		path.join(_dirname, "../frontend/build/index.html"),
+		function(err){
+			if(err){
+				res.status(500).send(err);
+				}
+			}
+		);
+})
+
+app.use(userRoutes)
 //connect to db
 mongoose.connect(process.env.MONG_URI)
     .then(() => {
@@ -32,17 +43,7 @@ mongoose.connect(process.env.MONG_URI)
 const _dirname = path.dirname("")
 const buildPath = path.join(_dirname, "../frontend/build");
 
-apt.get("/", function(req, res){
 
-	res.sendFile(
-		path.join(_dirname, "../frontend/build/index.html"),
-		function(err){
-			if(err){
-				res.status(500).send(err);
-				}
-			}
-		);
-})
 
 // attach all routes to app
 // app.use('/api/', ) 
