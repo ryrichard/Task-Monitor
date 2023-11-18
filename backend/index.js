@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const userRoutes = require("./routes/userRoutes");
-
+const path = require('path')
 // express app
 const app = express()
 
@@ -28,6 +28,21 @@ mongoose.connect(process.env.MONG_URI)
     .catch((error) => {
         console.log(error)
     })
+
+const _dirname = path.dirname("")
+const buildPath = path.join(_dirname, "../frontend/build");
+
+apt.get("/", function(req, res){
+
+	res.sendFile(
+		path.join(_dirname, "../frontend/build/index.html"),
+		function(err){
+			if(err){
+				res.status(500).send(err);
+				}
+			}
+		);
+})
 
 // attach all routes to app
 // app.use('/api/', ) 
