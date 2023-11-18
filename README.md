@@ -12,4 +12,4 @@ I am able to connect to the Ubuntu instance on AWS. I even connected to the term
 https://github.com/ryrichard/django-react-app/edit/RichardY-AWSBuild/README.md
 https://jasonwatmore.com/post/2018/09/26/setup-nodejs-mongodb-production-server-on-ubuntu-1804
 https://www.workfall.com/learning/blog/how-to-build-and-deploy-a-mern-stack-application-on-aws/
-ChatGPT
+<br /> ChatGPT
