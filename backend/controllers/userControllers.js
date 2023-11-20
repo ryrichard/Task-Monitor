@@ -3,6 +3,10 @@
  * Functionality of processing the login request goes here
 */
 const User = require('../database/models/userModel')
+const Group = require('../database/models/groupModel')
+const GroupMember = require('../database/models/groupMemberModel')
+const Task = require('../database/models/taskModel')
+const TaskGroup = require('../database/models/taskGroupModel')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
@@ -64,7 +68,7 @@ async function logoutController(req, res) {
 async function registerController(req, res) {
     const {username, password, email} = req.body
     
-    // console.log(`${username}, ${password}, ${email}`)   
+    console.log(`${username}, ${password}, ${email}`)   
 
     const usernameExist = await User.exists({username: {$regex: new RegExp(username, 'i')}})
 
@@ -100,18 +104,33 @@ async function registerController(req, res) {
 /*
 Get all task
 Requires user id or group id
+check if id is valid 
+check if any taskgroup is associated with id
+return all task
 */
 async function getTasksController(req, res){
-    // get all task. First we find TaskGroup based on ID. Then return all taskId
+     // get id
+    const {id} = req.body
+
     try {
-        const user = req.user
-        
-        const taskGroups = await TaskGroup.find({id: user._id})
+        // check if id is valid
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).json({error: "Invalid ID"})
+        }
+        // check if there is any taskgroup associated with id
+        const taskGroupExist = await TaskGroup.findOne({id: id})
 
-        const taskIds = taskGroups.flatMap((taskGroup) => taskGroup.taskId)
+        if(!taskGroupExist){
+            return res.status(404).json({error: "No task associated wtih ID"})
+        }
 
+        // grab all the taskId in the taskgroud
+        const taskIds = taskGroupExist.taskId
+
+        // find all the task with the taskId
         const tasks = await Task.find({_id: {$in: taskIds}})
 
+        // return it all
         return res.status(200).json(tasks)
     } catch (err){
         console.error(err)
@@ -145,22 +164,55 @@ async function getTaskController(req, res){
 /*
 Create task 
 Requires 2 objects, the user or group and task
-Get id from user or group
-Find taskGroup affiliated with id. If none found, create one.
-Add taskId to found/new taskGroup.taskId
+Steps:
+    check if id is valid
+    check if id exist in groupdb or userdb
+    check if taskGroup is associated with id
+        if yes, add task.id to taskGroup; end
+        if no...
+    create taskGroup
+    assign userId.groupId to taskGroup
+    assign taskId to taskGroup
+    end
 */
 async function createTaskController(req, res){
-    // const {user, task} = req.body
+    const {id, title, description, completed} = req.body
 
-    // const {title, description, completed} = task
-    // const {id} = user._id
+    try{
+        // check if id is valid
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).json({error: "Invalid ID"})
+        }
 
-    // try{
-    //     const task = await Task.create({title, description, completed, id})
-    //     res.status(200).json(task)
-    // } catch (error) {
-    //     res.status(404).json({error: error.message})
-    // }
+        // find id in User or Group db
+        const exist = await User.findOne({_id: id}) || await Group.findOne({_id: id})
+
+        //check if exist in group or user
+        if(!exist){
+            return res.status(500).json({message: "Invalid ID", id: id})
+        }
+
+        // create task instance
+        const newTask = {title, description, completed}
+        const createTask = await Task.create(newTask)
+
+        // check if taskGroup exist
+        const taskGroupExist = await TaskGroup.findOne({id: id})
+        if(taskGroupExist){
+            const updatedTaskGroup = await TaskGroup.findOneAndUpdate(   { id: id }, 
+                { $push: { taskId: createTask._id } },
+                { new: true }
+            );
+            return res.status(200).json({message: "Task Added", taskgroup: updatedTaskGroup})
+        }
+        // if taskgroup does not exist, create one
+        const newTaskGroup = {id: id, taskId: [createTask._id]}
+        const createTaskGroup = await TaskGroup.create(newTaskGroup)
+
+        return res.status(200).json({message: "New taskGroup created",taskGroup: newTaskGroup})
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
 }
 
 /*

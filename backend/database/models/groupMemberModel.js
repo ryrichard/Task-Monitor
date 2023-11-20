@@ -14,8 +14,9 @@ const groupMemberSchema = new Schema({
         required: true
     },
     groupID:{
-        type: [mongoose.Types.ObjectId],
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        unique: true
     }
 }, {timestamps: true})
 
