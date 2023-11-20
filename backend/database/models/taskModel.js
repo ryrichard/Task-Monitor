@@ -20,6 +20,10 @@ const taskSchema = new Schema({
         type: boolean,
         default: false,
         required: true
+    },
+    id:{
+        type:[mongoose.Types.ObjectId],
+        required:true
     }
 
 }, {timestamps: true})
