@@ -1,5 +1,5 @@
 # AWS-Assignment 10
-I wasn't able to fully connect with AWS. Was trying to follow the instructions, but I'm not sure whether I missed something or 
+I wasn't able to fully connect with AWS. Was trying to follow the instructions, but I'm not sure whether I missed something or did something wrong. 
 
 
 <img src="/images/AWS.png" alt="AWS" title="AWS">
