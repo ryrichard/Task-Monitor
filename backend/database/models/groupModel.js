@@ -13,10 +13,10 @@ const groupSchema = new Schema({
         required: true,
         unique: true
     },
-    // userID:{
-    //     type : [mongoose.Types.ObjectId],
-    //     required: true
-    // }
+    groupLeaderID:{
+        type: [mongoose.Types.ObjectId],
+        required: true
+    }
 }, {timestamps: true})
 
-module.exports = mongoose.models('Group', groupSchema)
+module.exports = mongoose.model('Group', groupSchema)

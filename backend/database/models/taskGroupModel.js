@@ -10,8 +10,9 @@ const Schema = mongoose.Schema
 
 const taskGroupSchema = new Schema({
     id:{
-        type: [mongoose.Types.ObjectId],
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        unique: true
     },
     taskId:{
         type: [mongoose.Types.ObjectId],
