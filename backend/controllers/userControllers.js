@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const SALT_ROUNDS = 10;
 const Group = require("../database/models/groupModel");
-const GroupMember = require("../database/models/groupMemberModel");
+
 const Task = require("../database/models/taskModel");
 const TaskGroup = require("../database/models/taskGroupModel");
 
@@ -138,95 +138,47 @@ First look for userId/groupID in taskGroup.
 Then in taskId, look for taskId
 */
 
-async function deleteTaskController(req, res) {}
-async function getTaskController(req, res) {
-  // const { id } = req.params
-  // // check if id exist
-  // if(!mongoose.Types.ObjectId.isValid(id)){
-  //     return res.status(404).json({error: "No such task"})
-  // }
-  // const task = await Task.findById(id)
-  // // check if task exist
-  // if(!task){
-  //     return res.status(404).json({error: "No such task"})
-  // }
-  // return res.status(200).json(task)
-}
+async function getTaskController(req, res) {}
 
 /*
 Create task 
-Requires 2 objects, the user or group and task
-Get id from user or group
-Find taskGroup affiliated with id. If none found, create one.
-Add taskId to found/new taskGroup.taskId
+
 */
 async function createTaskController(req, res) {
-  //   const { id, title, description, completed } = req.body;
-  //   try {
-  //     // check if id is valid
-  //     if (!mongoose.Types.ObjectId.isValid(id)) {
-  //       return res.status(404).json({ error: "Invalid ID" });
-  //     }
-  //     const exist =
-  //       (await User.findOne({ _id: id })) || (await Group.findOne({ _id: id }));
-  //     //check if exist in group or user
-  //     if (!exist) {
-  //       return res.status(500).json({ message: "Invalid ID", id: id });
-  //     }
-  //     // create task instance
-  //     const newTask = { title, description, completed };
-  //     const createTask = await Task.create(newTask);
-  //     // check if taskGroup exist
-  //     const taskGroupExist = await TaskGroup.findOne({ id: id });
-  //     if (taskGroupExist) {
-  //       const updatedTaskGroup = await TaskGroup.findOneAndUpdate(
-  //         { id: id },
-  //         { $push: { taskId: createTask._id } },
-  //         { new: true }
-  //       );
-  //       return res
-  //         .status(200)
-  //         .json({ message: "Task Added", taskgroup: updatedTaskGroup });
-  //     }
-  //     // if taskgroup does not exist, create one
-  //     const newTaskGroup = { id: id, taskId: [createTask._id] };
-  //     const createTaskGroup = await TaskGroup.create(newTaskGroup);
-  //     return res
-  //       .status(200)
-  //       .json({ message: "New taskGroup created", taskGroup: newTaskGroup });
-  //   } catch (error) {
-  //     return res.status(500).json({ error: error.message });
-  //   }
-  // }
-  // // const {user, task} = req.body
-  // // const {title, description, completed} = task
-  // // const {id} = user._id
-  // // try{
-  // //     const task = await Task.create({title, description, completed, id})
-  // //     res.status(200).json(task)
-  // // } catch (error) {
-  // //     res.status(404).json({error: error.message})
-  // // }
-  // /*
-  // Delete task
-  // Requires userid/groupid and taskid
-  // Find taskGroup based on userid/groupid
-  // Find task based on taskgroup.taskid
-  // Delete it if found
-  // */
-  // async function deleteTaskController(req, res) {
-  //   // const { id } = req.params
-  //   // // check if id exist
-  //   // if(!mongoose.Types.ObjectId.isValid(id)){
-  //   //     return res.status(404).json({error: "No such task"})
-  //   // }
-  //   // const task = await Task.findOneAndDelete({_id: id})
-  //   // // check if task exist
-  //   // if(!task){
-  //   //     return res.status(404).json({error: "No such task"})
-  //   // }
-  //   // return res.status(200).json(task)
+  const { title, description, completed, id } = req.body;
+
+  try {
+    const newTask = await Task.create({ title, description, completed, id });
+    res.status(201).json(newTask);
+  } catch (error) {
+    console.error("Error creating task:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 }
+
+//create a task group
+async function createTaskGroupController(req, res) {
+  const { id, taskId } = req.body;
+
+  try {
+    const newTask = await TaskGroup.create({
+      id,
+      taskId,
+    });
+    res.status(201).json(newTask);
+  } catch (error) {
+    console.error("Error creating task group:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+// Delete task
+// Requires userid/groupid and taskid
+// Find taskGroup based on userid/groupid
+// Find task based on taskgroup.taskid
+// Delete it if found
+// */
+async function deleteTaskController(req, res) {}
 
 /*
 Update task 
@@ -235,18 +187,7 @@ Find taskGroup based on userid/groupid
 Find task based on taskgroup.taskid
 Update if found
 */
-async function updateTaskController(req, res) {
-  // const {id}  = req.params
-  // // check if id exist
-  // if(!mongoose.Types.ObjectId.isValid(id)){
-  //     return res.status(404).json({error: "No such task"})
-  // }
-  // const task = await Task.findOneAndUpdate({_id: id}, {...req.body}, {new:true})
-  // if(!task){
-  //     return res.status(404).json({error: "No such task"})
-  // }
-  // res.status(200).json(task)
-}
+async function updateTaskController(req, res) {}
 
 module.exports = {
   getallUserController,
@@ -258,4 +199,5 @@ module.exports = {
   createTaskController,
   deleteTaskController,
   updateTaskController,
+  createTaskGroupController,
 };

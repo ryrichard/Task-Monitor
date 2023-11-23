@@ -1,43 +1,47 @@
-const express = require('express')
+const express = require("express");
 const {
-    getallUserController,
-    loginController,
-    logoutController,
-    registerController,
-    getTasksController,
-    getTaskController,
-    createTaskController,
-    deleteTaskController,
-    updateTaskController
-} = require('../controllers/userControllers')
+  getallUserController,
+  loginController,
+  logoutController,
+  registerController,
+  getTasksController,
+  getTaskController,
+  createTaskController,
+  deleteTaskController,
+  updateTaskController,
+  createTaskGroupController,
+} = require("../controllers/userControllers");
 
-const router = express.Router()
+const router = express.Router();
 
 //Get all users
-router.get('/user/all', getallUserController)
+router.get("/user/all", getallUserController);
 
 //Post login
-router.post('/user/login', loginController)
+router.post("/user/login", loginController);
 
 //Post logout
-router.post('/user/logout', logoutController)
+router.post("/user/logout", logoutController);
 
 //Post register
-router.post('/user/register', registerController)
+router.post("/user/register", registerController);
 
 //GET all Task
-router.get('/task', getTasksController)
+router.get("/task", getTasksController);
 
 //GET 1 Task
-router.get('/:id', getTaskController)
+router.get("/:id", getTaskController);
 
 //POST a new task
-router.post('/', createTaskController)
+router.post("/", createTaskController);
+
+//Post a new group task
+router.post("/taskgroup", createTaskGroupController);
 
 //DELETE a task
-router.delete('/:id', deleteTaskController)
+router.delete("/:id", deleteTaskController);
 
 //PATCH a task
-router.patch('/:id', updateTaskController)
+router.patch("/:id", updateTaskController);
 
-module.exports = router
+module.exports = router;

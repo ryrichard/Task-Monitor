@@ -24,7 +24,7 @@ mongoose
     "mongodb+srv://Maoxi:Mao1234@cluster0.2srvy3l.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    app.listen(3000, () => {
       console.log("connected to db & Listening on port", process.env.PORT);
     });
   })
