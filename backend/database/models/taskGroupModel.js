@@ -5,8 +5,8 @@ Id can only be either 1 user or 1 group
 TaskId can be an array
 */
 
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const taskGroupSchema = new Schema({
     id:{
@@ -14,10 +14,12 @@ const taskGroupSchema = new Schema({
         required: true,
         unique: true
     },
-    taskId:{
-        type: [mongoose.Types.ObjectId],
-        required: true
-    }
-}, {timestamps: true})
+    taskId: {
+      type: [mongoose.Types.ObjectId],
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('TaskGroup', taskGroupSchema)
+module.exports = mongoose.model("TaskGroup", taskGroupSchema);
