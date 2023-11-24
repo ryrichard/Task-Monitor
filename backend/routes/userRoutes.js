@@ -9,7 +9,6 @@ const {
   createTaskController,
   deleteTaskController,
   updateTaskController,
-  createTaskGroupController,
 } = require("../controllers/userControllers");
 
 const router = express.Router();

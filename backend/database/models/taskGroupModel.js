@@ -3,6 +3,7 @@ Task Group
 This is just to link the user or group with task. 
 Id can only be either 1 user or 1 group
 TaskId can be an array
+[THIS IS NOW OBSOLETE]
 */
 
 const mongoose = require("mongoose");
@@ -22,4 +23,4 @@ const taskGroupSchema = new Schema({
   { timestamps: true }
 );
 
-module.exports = mongoose.model("TaskGroup", taskGroupSchema);
+// module.exports = mongoose.model("TaskGroup", taskGroupSchema);

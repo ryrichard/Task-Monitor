@@ -17,8 +17,7 @@ const taskSchema = new Schema(
     },
     description: {
       type: String,
-      default: "",
-      required: true,
+      default: ""
     },
     completed: {
       type: Boolean,
