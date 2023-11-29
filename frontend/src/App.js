@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
-// import './App.css';
+import './App.css';
 import Modal from './components/Modal';
 import axios from 'axios';
+import Login from './components/Login';
+import Register from './components/Register';
 
 class App extends Component{
   constructor(props){
     super(props);
     this.state={
+      viewLogin: false,
+      viewRegister: false,
       viewCompleted:false,
       activeItem: {
         title:"",
@@ -107,12 +111,37 @@ class App extends Component{
   editItem = item => {
     this.setState({activeItem: item, modal: !this.state.modal});
   }
+// Function to handle login button click
+handleLoginClick = () => {
+  this.setState({ viewLogin: true});
+ }
 
+ // Function to handle canceling login
+ handleLoginCancel = () => {
+ this.setState({ viewLogin: false });
+ }
+ // Function to handle register button click
+ handleRegisterClick = () => {
+  this.setState({ viewLogin: false, viewRegister: true });
+ }
+ 
+ // Function to handle canceling registration
+ handleRegisterCancel = () => {
+  this.setState({ viewRegister: false });
+ }
+ 
 
   render(){
     return(
       <main className="content p-3 mb-2 bg-info">
-        <h1 className="text-white text-uppercase text-center my-4">Task Manager</h1>
+         {/* Button for login and register */}
+      <div className="loginBtn">
+        <div className="button">
+          <button className="btn btn-primary" onClick={this.handleLoginClick}>Login</button>
+          <button className="btn btn-primary" onClick={this.handleRegisterClick}>Register</button>
+    </div>
+  </div>
+        <h1 className="text-lightblue text-uppercase text-center my-4">Task Manager</h1>
         <div className="row">
           <div className="col-md-6 col-sma-10 mx-auto p-0">
             <div className="card p-3">
@@ -130,6 +159,29 @@ class App extends Component{
         {this.state.modal ? (
           <Modal activeItem={this.state.activeItem} toggle={this.toggle} onSave={this.handleSubmit}/>
         ) : null} 
+        {/* Separate modal for login */}
+       {this.state.viewLogin && (
+        <div className="loginModal">
+          <div className="modalContent">
+            <span className="close" onClick={this.handleLoginCancel}>
+              &times;
+            </span>
+            <Login onCancel={this.handleLoginCancel} />
+          </div>
+        </div>
+      )}
+      {/* Separate modal for registration */}
+      {this.state.viewRegister && (
+         <div className="register-modal">
+           <div className="modal-content">
+             <span className="close" onClick={this.handleRegisterCancel}>
+               &times;
+             </span>
+             <Register onCancel={this.handleRegisterCancel} />
+           </div>
+         </div>
+       )}
+
       </main>
     )
   }

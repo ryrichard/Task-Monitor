@@ -27,6 +27,32 @@
 .App-link {
   color: #61dafb;
 }
+.loginBtn {
+  text-align: right;
+  margin-top: 30px;
+  margin-bottom: 20px;
+ }
+ .button button{
+  margin-right: 20px;
+  background-color: transparent;
+  border-color: transparent;
+  color: black;
+ }
+ .button button.btn-primary {
+  background-color: transparent;
+  border-color: transparent;
+  color: black;
+ }
+ 
+ 
+ .content {
+  height: 100vh; /* Set the desired height */
+  background: radial-gradient(pink, lightblue);
+ }
+ .text-lightblue {
+  color: rgb(113, 134, 252);
+ }
+ 
 
 @keyframes App-logo-spin {
   from {
