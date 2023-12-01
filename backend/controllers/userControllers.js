@@ -11,6 +11,8 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const SALT_ROUNDS = 10
 
+
+// USER
 async function getallUserController(req, res) {
   const users = await User.find({});
   res.status(200).json({ users });
@@ -109,6 +111,9 @@ async function registerController(req, res) {
   }
 }
 
+
+// TASK
+
 /*
 Get all task
 Requires user id or group id
@@ -150,7 +155,6 @@ async function getTaskController(req, res) {}
 
 /*
 Create task 
-<<<<<<< HEAD
 Requires 2 objects, the user or group and task
 Steps:
     check if id is valid
@@ -222,6 +226,124 @@ Update if found
 */
 async function updateTaskController(req, res) {}
 
+
+// GROUP
+
+/*
+Create Group Function
+Requires: User Id, Group name
+Steps:
+Validate id
+Make sure Group name doesnt already exist in GroupDb
+Create group and assign Id to leader
+*/
+async function createGroupController(req, res){
+  const {userId, groupName} = req.body
+  console.log(userId, groupName)
+  try{
+    // validate id
+    if(!mongoose.Types.ObjectId.isValid(userId)){
+      return res.status(404).json({error: "Invalid ID"})
+    }
+
+    // make sure group name doesnt already exist
+    const groupNameExist = await Group.findOne({name: groupName})
+    
+    if(groupNameExist){
+      return res.status(400).json({error: "Group Name already exist"})
+    }
+
+    const newGroup = await Group.create({
+      name: groupName,
+      groupLeaderID: userId
+    })
+
+    return res.status(200).json({message: "Group successfully created", group: newGroup})
+  } catch(err){
+    console.error(err)
+    return res.status(500).json({error: err})
+  }
+}
+
+/*
+Search Groups
+Requires: none
+Steps:
+Gather GroupDb
+Return Array of Groups
+*/
+async function getGroupsController(req, res){
+  try{
+    const groups = await Group.find({})
+
+    return res.status(200).json({groups})
+  }catch(err){
+    console.error(err)
+    return res.status(500).json({error: err.message})
+  }
+}
+
+/*
+Search for 1 group
+Requires: Group Name
+Steps:
+Search through GroupDb for name
+Return 1 object
+*/
+async function getGroupByNameController(req, res){
+  const {groupName} = req.body
+
+  try{
+    // find group
+    const groupExist = await Group.findOne({name: groupName})
+
+    // check if exist
+    if(!groupExist){
+      return res.status(404).json({message: "Group does not exist"})
+    }
+
+    // return group
+    return res.status(200).json({groupExist})
+  }catch(err){
+    console.error(err)
+    return res.status(500).json({error: err.message})
+  }
+}
+
+/*
+Add to Group
+Requires: Username, Groupname
+Steps:
+Search through UserDB valid User
+Search through GroupDB for valid Group
+Make sure User is not in group already
+Add User to group
+*/
+async function addToGroupController(req, res){}
+
+/*
+Remove from Group
+Requires: Username, Groupname
+Steps:
+Search through UserDB valid User
+Search through GroupDB for valid Group
+If User is leader, randomly pick a member to to be leader
+If there are no members, delete group
+Remove user from group if found
+*/
+async function removeFromGroupController(req, res){}
+
+/*
+Delete Group
+Requires: Username, Groupname
+Steps:
+Search through UserDB valid User
+Search through GroupDB for valid Group
+Check to see if User is leader of group
+If so, delete group
+*/
+async function deleteGroupController(req, res){}
+
 module.exports = {
   getallUserController,
   loginController,
@@ -232,4 +354,7 @@ module.exports = {
   createTaskController,
   deleteTaskController,
   updateTaskController,
+  createGroupController,
+  getGroupsController,
+  getGroupByNameController
 };

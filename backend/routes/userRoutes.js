@@ -9,9 +9,13 @@ const {
   createTaskController,
   deleteTaskController,
   updateTaskController,
+  createGroupController,
+  getGroupsController
 } = require("../controllers/userControllers");
 
 const router = express.Router();
+
+// router.get("/", () => {console.log("TestingTesting123")})
 
 //Get all users
 router.get("/user/all", getallUserController);
@@ -39,5 +43,11 @@ router.delete('/task/:id', deleteTaskController)
 
 //PATCH a task
 router.patch('/task/:id', updateTaskController)
+
+//POST new group
+router.post("/group/create", createGroupController)
+
+//GET all groups
+router.get("/groups", getGroupsController)
 
 module.exports = router;
