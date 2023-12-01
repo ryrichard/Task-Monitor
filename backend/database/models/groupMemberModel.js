@@ -3,6 +3,7 @@ Group Member
 This is just to link the user with the group. 
 UserID can be an array of users
 GroupID should only associate with 1 group
+[THIS IS NOW OBSOLETE]
 */
 
 const mongoose = require("mongoose");
@@ -22,4 +23,4 @@ const groupMemberSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("GroupMember", groupMemberSchema);
+// module.exports = mongoose.model("GroupMember", groupMemberSchema);

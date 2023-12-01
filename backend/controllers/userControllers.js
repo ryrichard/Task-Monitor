@@ -1,16 +1,15 @@
 /**
  * User login controller
  * Functionality of processing the login request goes here
- */
-const User = require("../database/models/userModel");
-const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const SALT_ROUNDS = 10;
-const Group = require("../database/models/groupModel");
-
-const Task = require("../database/models/taskModel");
-const TaskGroup = require("../database/models/taskGroupModel");
+<<<<<<< HEAD
+*/
+const User = require('../database/models/userModel')
+const Group = require('../database/models/groupModel')
+const Task = require('../database/models/taskModel')
+const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+const SALT_ROUNDS = 10
 
 async function getallUserController(req, res) {
   const users = await User.find({});
@@ -113,22 +112,31 @@ async function registerController(req, res) {
 /*
 Get all task
 Requires user id or group id
+check if id is valid 
+check if any taskgroup is associated with id
+return all task
 */
-async function getTasksController(req, res) {
-  // get all task. First we find TaskGroup based on ID. Then return all taskId
-  try {
-    const user = req.user;
+async function getTasksController(req, res){
+    //  // get id
+    // const {id} = req.body
 
-    const taskGroups = await TaskGroup.find({ id: user._id });
+    // try {
+    //     // check if id is valid
+    //     if(!mongoose.Types.ObjectId.isValid(id)){
+    //         return res.status(404).json({error: "Invalid ID"})
+    //     }
 
-    const taskIds = taskGroups.flatMap((taskGroup) => taskGroup.taskId);
+    //     // grab all the taskId in the taskgroud
+    //     const taskIds = taskGroupExist.taskId
 
-    const tasks = await Task.find({ _id: { $in: taskIds } });
+    //     // find all the task with the taskId
+    //     const tasks = await Task.find({_id: {$in: taskIds}})
 
-    return res.status(200).json(tasks);
-  } catch (err) {
-    console.error(err);
-  }
+    //     // return it all
+    //     return res.status(200).json(tasks)
+    // } catch (err){
+    //     console.error(err)
+    // }
 }
 
 /*
@@ -142,35 +150,60 @@ async function getTaskController(req, res) {}
 
 /*
 Create task 
-
+<<<<<<< HEAD
+Requires 2 objects, the user or group and task
+Steps:
+    check if id is valid
+    check if id exist in groupdb or userdb
+    check if taskGroup is associated with id
+        if yes, add task.id to taskGroup; end
+        if no...
+    create taskGroup
+    assign userId.groupId to taskGroup
+    assign taskId to taskGroup
+    end
 */
-async function createTaskController(req, res) {
-  const { title, description, completed, id } = req.body;
+async function createTaskController(req, res){
+    const {id, title, description, completed} = req.body
 
-  try {
-    const newTask = await Task.create({ title, description, completed, id });
-    res.status(201).json(newTask);
-  } catch (error) {
-    console.error("Error creating task:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+    try{
+        // check if id is valid
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).json({error: "Invalid ID"})
+        }
+
+        // find id in User or Group db
+        const exist = await User.findOne({_id: id}) || await Group.findOne({_id: id})
+
+        //check if exist in group or user
+        if(!exist){
+            return res.status(500).json({message: "Invalid ID", id: id})
+        }
+
+        // create task instance
+        const newTask = await Task.create({ title, description, completed, id });
+        return res.status(201).json(newTask);
+    } catch (error) {
+        console.error("Error creating task:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 }
 
 //create a task group
-async function createTaskGroupController(req, res) {
-  const { id, taskId } = req.body;
+// async function createTaskGroupController(req, res) {
+//   const { id, taskId } = req.body;
 
-  try {
-    const newTask = await TaskGroup.create({
-      id,
-      taskId,
-    });
-    res.status(201).json(newTask);
-  } catch (error) {
-    console.error("Error creating task group:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
+//   try {
+//     const newTask = await TaskGroup.create({
+//       id,
+//       taskId,
+//     });
+//     res.status(201).json(newTask);
+//   } catch (error) {
+//     console.error("Error creating task group:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// }
 
 // Delete task
 // Requires userid/groupid and taskid
@@ -199,5 +232,4 @@ module.exports = {
   createTaskController,
   deleteTaskController,
   updateTaskController,
-  createTaskGroupController,
 };
