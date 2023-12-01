@@ -10,7 +10,7 @@ const {
   deleteTaskController,
   updateTaskController,
   createGroupController,
-  getGroupsController
+  getGroupsController,
 } = require("../controllers/userControllers");
 
 const router = express.Router();
@@ -33,21 +33,21 @@ router.post("/user/register", registerController);
 router.get("/task", getTasksController);
 
 //GET 1 Task
-router.get('/task/:id', getTaskController)
+router.get("/task/:id", getTaskController);
 
 //POST a new task
-router.post('/task', createTaskController)
+router.post("/task", createTaskController);
 
 //DELETE a task
-router.delete('/task/:id', deleteTaskController)
+router.delete("/task/:id", deleteTaskController);
 
 //PATCH a task
-router.patch('/task/:id', updateTaskController)
+router.patch("/task/:id", updateTaskController);
 
 //POST new group
-router.post("/group/create", createGroupController)
+router.post("/group/create", createGroupController);
 
 //GET all groups
-router.get("/groups", getGroupsController)
+router.get("/groups", getGroupsController);
 
 module.exports = router;
