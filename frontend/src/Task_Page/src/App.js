@@ -8,17 +8,17 @@ function App() {
   const [todos, setTodos] = useState([
     {
       id: 1,
-      text: 'Fake 1',
+      text: 'finish the math work ',
       checked: true,
     },
     {
       id: 2,
-      text: 'Fake 2',
+      text: 'go gym',
       checked: true,
     },
     {
       id: 3,
-      text: 'Fake 3',
+      text: 'review exam',
       checked: false,
     },
   ]);
