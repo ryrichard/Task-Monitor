@@ -5,7 +5,7 @@
     transform: translate(-50%, -50%);
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(pink, lightblue);
+    background: radial-gradient( #fff 30%, lightblue );
     display: flex;
     align-items: center;
  }
