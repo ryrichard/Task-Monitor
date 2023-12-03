@@ -9,7 +9,7 @@ function App() {
   // State variables
   const [viewLogin, setViewLogin] = useState(false);
   const [viewRegister, setViewRegister] = useState(false);
-  const [vieTask, setViewTask] = useState(false);
+  const [viewTask, setViewTask] = useState(false);
 
   const handleTaskClick = () => {
     setViewTask(true);
