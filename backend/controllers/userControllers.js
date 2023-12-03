@@ -109,15 +109,15 @@ async function registerController(req, res) {
 
     // Check if username is valid
     if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(username)) {
-      return res.json({
+      return res.status(500).json({
         status: "FAILED",
-        message: "Invalid username format",
+        message: "Invalid username format （NO !@#$%...)",
       });
     }
 
     // Check if password meets minimum length requirement
     if (password.length < 4) {
-      return res.json({
+      return res.status(500).json({
         status: "FAILED",
         message: "Password is too short (minimum length: 4 characters)",
       });
@@ -126,7 +126,7 @@ async function registerController(req, res) {
     // Check if the username already exists
     const usernameExists = await User.exists({ username: username });
     if (usernameExists) {
-      return res.json({
+      return res.status(500).json({
         status: "FAILED",
         message: "Username already exists",
       });

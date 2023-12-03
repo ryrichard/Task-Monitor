@@ -41,6 +41,7 @@ export default function Register() {
         // Registration successful
         console.log("Registration successful!");
         alert("Registration successful!");
+        setError("Go Back To Home and Login ");
       } else {
         // Handle registration error
         const data = await response.json();
