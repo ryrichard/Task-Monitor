@@ -19,6 +19,13 @@
   font-size: 30px;
   cursor: pointer;
 }
+.logout {
+  position: fixed;
+  top: 20px;
+  right: 50px;
+  font-size: 20px;
+  cursor: pointer;
+}
 .form-group {
   margin-bottom: 20px;
 }

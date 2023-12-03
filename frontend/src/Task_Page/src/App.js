@@ -8,17 +8,7 @@ function App() {
   const [todos, setTodos] = useState([
     {
       id: 1,
-      text: 'finish the math work ',
-      checked: true,
-    },
-    {
-      id: 2,
-      text: 'go gym',
-      checked: true,
-    },
-    {
-      id: 3,
-      text: 'review exam',
+      text: 'Have a good day!!! ',
       checked: false,
     },
   ]);
