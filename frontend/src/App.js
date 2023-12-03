@@ -40,7 +40,7 @@ function App() {
   };
 
   return (
-    <main className="content p-3 mb-2 bg-info">
+    <main className="content p-3 mb-2 " style={{ background: 'radial-gradient(#fff 15%, lightblue)' }}>
       <div className="title">
         <h2>Task Monitor</h2>
       </div>

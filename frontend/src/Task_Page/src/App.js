@@ -9,6 +9,7 @@ function App() {
     {
       id: 1,
       text: 'Have a good day!!! ',
+      dueDate:'2023-12-14',
       checked: false,
     },
   ]);
@@ -27,10 +28,11 @@ function App() {
     setSelectedTodo((selectedTodo) => todo);
   };
 
-  const onInsert = useCallback((text) => {
+  const onInsert = useCallback((text,dueDate) => {
     const todo = {
       id: nextId.current,
       text,
+      dueDate,
       checked: false,
     };
     setTodos((todos) => todos.concat(todo)); //concat(): 인자로 주어진 배열이나 값들을 기존 배열에 합쳐서 새 배열 반환
@@ -41,11 +43,11 @@ function App() {
     setTodos((todos) => todos.filter((todo) => todo.id !== id));
   }, []);
   const onUpdate = useCallback(
-    (id, text) => {
+    (id, text, dueDate) => {
       onInsertToggle();
 
       setTodos((todos) =>
-        todos.map((todo) => (todo.id === id ? { ...todo, text } : todo)),
+        todos.map((todo) => (todo.id === id ? { ...todo, text , dueDate} : todo)),
       );
     },
     [onInsertToggle],
@@ -57,6 +59,13 @@ function App() {
       ),
     );
   }, []);
+  const updateDueDate = (id, newDueDate) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, dueDate: newDueDate } : todo
+      )
+    );
+  };
   return (
     <TodoTemplate>
       <ToDoInsert onInsert={onInsert} />
@@ -66,6 +75,7 @@ function App() {
         onRemove={onRemove}
         onChangeSelectedTodo={onChangeSelectedTodo}
         onInsertToggle={onInsertToggle}
+        updateDueDate={updateDueDate}
       />
       {insertToggle && (
         <ToDoEdit

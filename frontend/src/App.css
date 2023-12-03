@@ -16,11 +16,11 @@
  }
  
  
- .content {
+ .content{
   height: 100vh; /* Set the desired height */
-  background: radial-gradient( #fff 60%, lightblue 100%);
  }
  
+
  .title{
   font-style: bold;
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;

@@ -8,6 +8,7 @@ import {
 import './ToDoListItem.scss';
 import cn from 'classnames';
 
+
 function ToDoListItem({
   todo,
   onRemove,
@@ -16,7 +17,8 @@ function ToDoListItem({
   onInsertToggle,
   style,
 }) {
-  const { id, text, checked } = todo;
+  const { id, text, checked, dueDate} = todo;
+
   return (
     <div className="TodoListItem-virtualized" style={style}>
       <li className="TodoListItem">
@@ -24,8 +26,13 @@ function ToDoListItem({
           className={cn('checkbox', { checked: checked })}
           onClick={() => onToggle(id)}
         >
-          {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-          <div className="text">{text}</div>
+             {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+          <div className="text">
+            {text}
+            {dueDate && (
+              <span className="due-date">Due Date: {dueDate}</span>
+            )}
+          </div>
         </div>
         <div
           className="edit"
