@@ -10,6 +10,10 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const SALT_ROUNDS = 10;
+const createToken = (_id) => {
+  //(payload, secret, options)
+  return jwt.sign({ _id }, process.env.ACCESS_TOKEN_SECRET, {});
+};
 
 // USER
 async function getallUserController(req, res) {
@@ -21,31 +25,54 @@ async function loginController(req, res) {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
-    // check if user exist
-    if (!user) {
-      return res.status(401).json({ message: "Error: Incorrect Login" });
+    // Check if username and password are provided
+    if (!username || !password) {
+      return res.json({
+        status: "FAILED",
+        message: "Username and password are required",
+      });
     }
 
-    // Compare password with encrypted password
+    // Find the user in the database
+    const user = await User.findOne({ username });
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(500).json({
+        status: "FAILED",
+        message: "Can't find username",
+      });
+    }
+
+    // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Error: Incorrect User" });
+      return res.status(500).json({
+        status: "FAILED",
+        message: "Invalid username or password",
+      });
     }
 
-    // Generate jwt token
+    // Generate a JWT token
     const token = jwt.sign(
-      { user: user._id, username: user.username },
-      "your-secret-key",
-      { expiresIn: "1h" }
+      { userId: user._id, username: user.username },
+      "your-secret-key", // Replace with your secret key for signing the token
+      { expiresIn: "1h" } // Token expires in 1 hour (adjust as needed)
     );
 
-    //successful User
-    res.json({ message: "Login Successful", token });
+    // Respond with the token
+    res.json({
+      status: "SUCCESS",
+      message: "Login successful",
+      token: token,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error during login:", error);
+    res.status(500).json({
+      status: "FAILED",
+      message: "Internal Server Error",
+    });
   }
 }
 
@@ -71,42 +98,62 @@ async function logoutController(req, res) {
 async function registerController(req, res) {
   const { username, password, email } = req.body;
 
-  // console.log(`${username}, ${password}, ${email}`)
-
-  const usernameExist = await User.exists({
-    username: { $regex: new RegExp(username, "i") },
-  });
-
-  // const userE = await User.findOne({username})
-  // console.log(userE)
-
-  if (usernameExist) {
-    return res.status(400).json({ message: "Username already exist" });
-  }
-
-  const emailExist = await User.exists({
-    email: { $regex: new RegExp(email, "i") },
-  });
-
-  if (emailExist) {
-    return res.status(400).json({ message: "Email already exist" });
-  }
-
   try {
-    // encrypt password
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    // Check if username and password are provided
+    if (!username || !password) {
+      return res.json({
+        status: "FAILED",
+        message: "Username and password are required",
+      });
+    }
 
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Check if username is valid
+    if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(username)) {
+      return res.status(500).json({
+        status: "FAILED",
+        message: "Invalid username format （NO !@#$%...)",
+      });
+    }
 
-    const newUser = { username, hashedPassword, email };
+    // Check if password meets minimum length requirement
+    if (password.length < 4) {
+      return res.status(500).json({
+        status: "FAILED",
+        message: "Password is too short (minimum length: 4 characters)",
+      });
+    }
 
-    const createUser = await User.create(newUser);
+    // Check if the username already exists
+    const usernameExists = await User.exists({ username: username });
+    if (usernameExists) {
+      return res.status(500).json({
+        status: "FAILED",
+        message: "Username already exists",
+      });
+    }
 
-    res
-      .status(200)
-      .json({ message: "User registration successful", user: newUser });
-  } catch (err) {
-    console.error("Error during registration: ", err);
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+    // Create a new user
+    const newUser = await User.create({
+      username: username,
+      hashedPassword: hashedPassword,
+      email: email,
+    });
+
+    // You can choose to respond with the created user details or a success message
+    return res.json({
+      status: "SUCCESS",
+      message: "Registration successful",
+      user: newUser,
+    });
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res.status(500).json({
+      status: "FAILED",
+      message: "Internal Server Error",
+    });
   }
 }
 

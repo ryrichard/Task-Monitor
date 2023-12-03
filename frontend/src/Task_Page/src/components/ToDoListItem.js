@@ -14,7 +14,7 @@ function ToDoListItem({
   onToggle,
   onChangeSelectedTodo,
   onInsertToggle,
-  style
+  style,
 }) {
   const { id, text, checked } = todo;
   return (

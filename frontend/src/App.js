@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
-import './App.css';
-import Login from './components/Login'; 
-import Register from './components/Register'; 
-import image from './components/task.png';
+import React, { useState } from "react";
+import "./App.css";
+import Login from "./Login";
+import Register from "./components/Register";
+import image from "./components/task.png";
+//import Task from "./Task_Page/src/App";
 
 function App() {
   // State variables
   const [viewLogin, setViewLogin] = useState(false);
   const [viewRegister, setViewRegister] = useState(false);
+  //const [viewTask, setViewTask] = useState(false);
 
+  // const handleTaskClick = () => {
+  //   setViewTask(true);
+  // };
+
+  // // Function to handle canceling login
+  // const handleTaskCancel = () => {
+  //   setViewTask(false);
+  // };
   // Function to handle login button click
   const handleLoginClick = () => {
     setViewLogin(true);
@@ -21,7 +31,6 @@ function App() {
 
   // Function to handle register button click
   const handleRegisterClick = () => {
-    setViewLogin(false);
     setViewRegister(true);
   };
 
@@ -32,17 +41,17 @@ function App() {
 
   return (
     <main className="content p-3 mb-2 bg-info">
-      <div className = "title">
+      <div className="title">
         <h2>Task Monitor</h2>
       </div>
-      
-      <div className = "description">
+
+      <div className="description">
         <h1>Organize your work and life</h1>
         <h5>Becomes focused and organized with Task Monitor</h5>
         <h5>A task manager you can trust for life</h5>
-        <img src={image} alt="Your Description" className="image-small"/>
+        <img src={image} alt="Your Description" className="image-small" />
       </div>
-      
+
       {/* Button for login and register */}
       <div className="loginBtn">
         <div className="button">
@@ -52,6 +61,9 @@ function App() {
           <button className="btn btn-primary" onClick={handleRegisterClick}>
             Register
           </button>
+          {/* <button className="btn btn-primary" onClick={handleTaskClick}>
+            trial
+          </button> */}
         </div>
       </div>
       {/* Separate modal for login */}
@@ -76,6 +88,16 @@ function App() {
           </div>
         </div>
       )}
+      {/* {viewTask && (
+        <div className="loginModal">
+          <div className="modalContent">
+            <span className="close" onClick={handleTaskCancel}>
+              &times;
+            </span>
+            <Task onCancel={handleTaskCancel} />
+          </div>
+        </div>
+      )} */}
     </main>
   );
 }
