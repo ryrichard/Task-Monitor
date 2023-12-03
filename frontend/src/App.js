@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import "./App.css";
-import Login from "./components/Login";
+import Login from "./Login";
 import Register from "./components/Register";
 import image from "./components/task.png";
-import Task from "./Task_Page/src/App";
+//import Task from "./Task_Page/src/App";
 
 function App() {
   // State variables
   const [viewLogin, setViewLogin] = useState(false);
   const [viewRegister, setViewRegister] = useState(false);
-  const [vieTask, setViewTask] = useState(false);
+  //const [viewTask, setViewTask] = useState(false);
 
-  const handleTaskClick = () => {
-    setViewTask(true);
-  };
+  // const handleTaskClick = () => {
+  //   setViewTask(true);
+  // };
 
-  // Function to handle canceling login
-  const handleTaskCancel = () => {
-    setViewTask(false);
-  };
+  // // Function to handle canceling login
+  // const handleTaskCancel = () => {
+  //   setViewTask(false);
+  // };
   // Function to handle login button click
   const handleLoginClick = () => {
     setViewLogin(true);
@@ -31,7 +31,6 @@ function App() {
 
   // Function to handle register button click
   const handleRegisterClick = () => {
-    setViewLogin(false);
     setViewRegister(true);
   };
 
@@ -62,9 +61,9 @@ function App() {
           <button className="btn btn-primary" onClick={handleRegisterClick}>
             Register
           </button>
-          <button className="btn btn-primary" onClick={handleTaskClick}>
+          {/* <button className="btn btn-primary" onClick={handleTaskClick}>
             trial
-          </button>
+          </button> */}
         </div>
       </div>
       {/* Separate modal for login */}
@@ -89,16 +88,16 @@ function App() {
           </div>
         </div>
       )}
-      {viewTask && (
+      {/* {viewTask && (
         <div className="loginModal">
           <div className="modalContent">
             <span className="close" onClick={handleTaskCancel}>
               &times;
             </span>
-            <Login onCancel={handleTaskCancel} />
+            <Task onCancel={handleTaskCancel} />
           </div>
         </div>
-      )}
+      )} */}
     </main>
   );
 }

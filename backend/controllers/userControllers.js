@@ -38,9 +38,9 @@ async function loginController(req, res) {
 
     // Check if the user exists
     if (!user) {
-      return res.json({
+      return res.status(500).json({
         status: "FAILED",
-        message: "Invalid username or password",
+        message: "Can't find username",
       });
     }
 
@@ -48,7 +48,7 @@ async function loginController(req, res) {
     const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
 
     if (!isPasswordValid) {
-      return res.json({
+      return res.status(500).json({
         status: "FAILED",
         message: "Invalid username or password",
       });
