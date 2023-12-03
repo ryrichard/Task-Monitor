@@ -22,6 +22,11 @@
   .text {
     margin-left: 0.5rem;
   }
+  .due-date {
+    margin-left: 50px; 
+    font-size: 16px; 
+    color: grey; 
+  }
   &.checked {
     svg {
       color: #9c88ff;

@@ -3,21 +3,27 @@ import './ToDoEdit.scss';
 
 function ToDoEdit({ insertToggle, selectedTodo, onUpdate }) {
   const [value, setValue] = useState('');
+  const [dueDate, setDueDate] = useState('');
   const onChange = useCallback((e) => {
     setValue(e.target.value);
   }, []);
+  const onChangeDueDate = useCallback((e) => {
+    setDueDate(e.target.value);
+  }, []);
   const onSubmit = useCallback(
     (e) => {
-      onUpdate(selectedTodo.id, value);
+      onUpdate(selectedTodo.id, value, dueDate);
       setValue(''); //Initialize value
+      setDueDate('');
       //Prevent refresh
       e.preventDefault();
     },
-    [onUpdate, value],
+    [onUpdate, value, dueDate],
   );
   useEffect(() => {
     if (selectedTodo) {
       setValue(selectedTodo.text);
+      setDueDate(selectedTodo.dueDate || '');
     }
   }, [selectedTodo]);
   return (
@@ -29,7 +35,13 @@ function ToDoEdit({ insertToggle, selectedTodo, onUpdate }) {
           value={value}
           placeholder="Put your task"
         />
-        <button type="submit">Edit</button>
+        <input
+          type="date"
+          onChange={onChangeDueDate}
+          value={dueDate}
+          placeholder="Due date"
+        />
+        <button type="submit">Update</button>
       </form>
     </div>
   );
