@@ -1,0 +1,40 @@
+.loginBtn {
+  text-align: right;
+  margin-top: -740px;
+ }
+ .button button{
+  margin-right: 20px;
+  background-color: transparent;
+  border-color: transparent;
+  color: black;
+  
+ }
+ .button button.btn-primary {
+  background-color: transparent;
+  border-color: transparent;
+  color: black;
+ }
+ 
+ 
+ .content{
+  height: 100vh; /* Set the desired height */
+ }
+ 
+
+ .title{
+  font-style: bold;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+ }
+
+.description {
+  text-align: center;
+  margin-top: 200px;
+}
+.image-small {
+  width: 45%;
+  height: 380px;
+}
+
+ 
+
+

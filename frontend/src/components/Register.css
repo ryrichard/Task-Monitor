@@ -1,0 +1,49 @@
+.register-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(#fff 30%, lightblue);
+  display: flex;
+  align-items: center;
+}
+.modal-content {
+  border-radius: 5px;
+  text-align: center;
+}
+.close {
+  position: fixed;
+  top: 8px;
+  right: 30px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+.register .form-label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+  margin-left: -35px;
+}
+.register input[type="text"],
+.register input[type="password"],
+.register input[type="email"] {
+  width: 130%;
+  margin-left: -15%;
+}
+.register {
+  background-color: white;
+  width: 80%;
+  max-width: 400px;
+  padding: 85px;
+  border-radius: 5px;
+  margin: 0 auto;
+}
